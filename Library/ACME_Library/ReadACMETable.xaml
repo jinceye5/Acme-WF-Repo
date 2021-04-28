@@ -76,7 +76,7 @@
       <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Extracts the tabledata frm ACME site" DisplayName="ReadAcmeTable" sap:VirtualizedContainerService.HintSize="375.2,442.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Extracts the tabledata frm ACME site" DisplayName="ReadAcmeTable" sap:VirtualizedContainerService.HintSize="375.2,544.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="&lt;webctrl aaname='&amp;gt;' tag='A' /&gt;" Name="NextLinkSelector" />
       <Variable x:TypeArguments="x:String" Default="&lt;extract-table get_columns_name='1' get_empty_columns='1' columns_name_source='Longest' /&gt;" Name="ExtractMetaData" />
@@ -253,5 +253,6 @@
       </TryCatch.Catches>
     </TryCatch>
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Completed extracting Table data&quot;]" />
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="333.6,62.4" sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="Datatable Extracted" />
   </Sequence>
 </Activity>
