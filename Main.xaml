@@ -13,16 +13,16 @@
     <x:Property sap2010:Annotation.AnnotationText="Status for Check request existence" Name="IsCheckRequestExist" Type="InArgument(x:Boolean)" />
     <x:Property sap2010:Annotation.AnnotationText="Client ID extracted from Check Request" Name="ClientID" Type="InArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="Datatable sent as output" Name="Report" Type="InArgument(sd:DataTable)" />
-    <x:Property sap2010:Annotation.AnnotationText="Mail ID of the receiver" Name="To_MailID" Type="InArgument(x:String)" />
-    <x:Property sap2010:Annotation.AnnotationText="Mail ID of the Sender/ Bot Machine" Name="BOT_MailID" Type="InArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="File path for the Config file" Name="ConfigPath" Type="InArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="Delay used in elemnt exist checks" Name="Delay" Type="InArgument(x:Int32)" />
     <x:Property sap2010:Annotation.AnnotationText="Status check for each module" Name="ProcessStatus" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Mail ID of the Sender/ Bot Machine" Name="BOTMailID" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Mail ID of the receiver" Name="ToMailID" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>824,1468</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>824,1840</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="88">
@@ -72,6 +72,9 @@
       <x:String>UiPath.Shared.Activities</x:String>
       <x:String>Google.Apis.PeopleService.v1.Data</x:String>
       <x:String>Google.Apis.Requests</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -114,9 +117,10 @@
       <AssemblyReference>Google.Apis.PeopleService.v1</AssemblyReference>
       <AssemblyReference>Google.Apis.Core</AssemblyReference>
       <AssemblyReference>Google.Apis</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities.Design</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ACME Task" sap:VirtualizedContainerService.HintSize="375.2,1403.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ACME Task" sap:VirtualizedContainerService.HintSize="524.8,1775.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="test" />
       <Variable x:TypeArguments="x:Boolean" Name="ConfirmationButton" />
@@ -132,8 +136,8 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Start Log" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;ACME Process Started&quot;]" />
-    <TryCatch DisplayName="Initialise" sap:VirtualizedContainerService.HintSize="333.6,52.8" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <ui:LogMessage DisplayName="Start Log" sap:VirtualizedContainerService.HintSize="483.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;ACME Process Started&quot;]" />
+    <TryCatch DisplayName="Initialise" sap:VirtualizedContainerService.HintSize="483.2,52.8" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -224,7 +228,7 @@
               </Assign>
               <Assign DisplayName="Assign Bot Mail ID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_25">
                 <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[BOT_MailID]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String">[BOTMailID]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
                   <InArgument x:TypeArguments="x:String">[ConfigTable.Select("[Name]='ACME_BOTMailID'")(0)(1).ToString]</InArgument>
@@ -232,7 +236,7 @@
               </Assign>
               <Assign DisplayName="Assign To Mail ID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_26">
                 <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[To_MailID]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String">[ToMailID]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
                   <InArgument x:TypeArguments="x:String">[ConfigTable.Select("[Name]='ACME_ToMailID'")(0)(1).ToString]</InArgument>
@@ -315,7 +319,7 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <If sap2010:Annotation.AnnotationText="Launches the Browser" Condition="[ProcessStatus=True]" DisplayName="If Initialise Completed, then Launch ACME" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_23">
+    <If sap2010:Annotation.AnnotationText="Launches the Browser" Condition="[ProcessStatus=True]" DisplayName="If Initialise Completed, then Launch ACME" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_23">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -414,7 +418,7 @@
         </If>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Logins into the website" Condition="[ProcessStatus=True]" DisplayName="If Launch Completed, then Login" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_24">
+    <If sap2010:Annotation.AnnotationText="Logins into the website" Condition="[ProcessStatus=True]" DisplayName="If Launch Completed, then Login" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_24">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -472,13 +476,14 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <TryCatch.Try>
-                  <Sequence sap:VirtualizedContainerService.HintSize="304,215.2" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                  <Sequence sap:VirtualizedContainerService.HintSize="200,68.8" sap2010:WorkflowViewState.IdRef="Sequence_38">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <a:Login ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="Login_1" Password="[Password]" UserName="[UserName]" />
+                    <a:Login ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" sap:VirtualizedContainerService.HintSize="283.2,241.6" sap2010:WorkflowViewState.IdRef="Login_1" Password="[Password]" UserName="[UserName]" />
                     <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_39">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
@@ -511,7 +516,7 @@
         </If>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Selects the Work Item Option" Condition="[ProcessStatus=True]" DisplayName="If Login Completed, then Select Work Items" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_26">
+    <If sap2010:Annotation.AnnotationText="Selects the Work Item Option" Condition="[ProcessStatus=True]" DisplayName="If Login Completed, then Select Work Items" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_26">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -520,13 +525,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Click Link for Work Items" sap:VirtualizedContainerService.HintSize="868,1022.4" sap2010:WorkflowViewState.IdRef="Sequence_74">
+        <Sequence DisplayName="Click Link for Work Items" sap:VirtualizedContainerService.HintSize="304,289.6" sap2010:WorkflowViewState.IdRef="Sequence_74">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign LinkName" sap:VirtualizedContainerService.HintSize="826.4,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign DisplayName="Assign LinkName" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[LinkName]</OutArgument>
             </Assign.To>
@@ -534,11 +539,11 @@
               <InArgument x:TypeArguments="x:String">Work Items</InArgument>
             </Assign.Value>
           </Assign>
-          <If sap2010:Annotation.AnnotationText="Checks whether the LinkName is empty" Condition="[string.IsNullOrEmpty(LinkName)]" DisplayName="Click Link for Work Items" sap:VirtualizedContainerService.HintSize="826.4,829.6" sap2010:WorkflowViewState.IdRef="If_4">
+          <If sap2010:Annotation.AnnotationText="Checks whether the LinkName is empty" Condition="[string.IsNullOrEmpty(LinkName)]" DisplayName="Click Link for Work Items" sap:VirtualizedContainerService.HintSize="262.4,96.8" sap2010:WorkflowViewState.IdRef="If_4">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
@@ -561,13 +566,13 @@
               </Sequence>
             </If.Then>
             <If.Else>
-              <Sequence DisplayName="False" sap:VirtualizedContainerService.HintSize="478.4,639.2" sap2010:WorkflowViewState.IdRef="Sequence_41">
+              <Sequence DisplayName="False" sap:VirtualizedContainerService.HintSize="304,245.6" sap2010:WorkflowViewState.IdRef="Sequence_41">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="436.8,60" sap2010:WorkflowViewState.IdRef="Assign_40">
+                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_40">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
                   </Assign.To>
@@ -575,21 +580,28 @@
                     <InArgument x:TypeArguments="x:Boolean">False</InArgument>
                   </Assign.Value>
                 </Assign>
-                <TryCatch DisplayName="Try Catch-ClickLink" sap:VirtualizedContainerService.HintSize="436.8,446.4" sap2010:WorkflowViewState.IdRef="TryCatch_7">
+                <TryCatch DisplayName="Try Catch-ClickLink" sap:VirtualizedContainerService.HintSize="262.4,52.8" sap2010:WorkflowViewState.IdRef="TryCatch_7">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <TryCatch.Try>
-                    <Sequence sap:VirtualizedContainerService.HintSize="304,215.2" sap2010:WorkflowViewState.IdRef="Sequence_42">
+                    <Sequence sap:VirtualizedContainerService.HintSize="304,245.6" sap2010:WorkflowViewState.IdRef="Sequence_42">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <a:ClickLink ACMEBrowserTab="[ACMEBrowserTab]" ColumnNumber="-1" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="ClickLink_1" LinkName="[LinkName]" RowNumber="-1" />
+                      <a:ClickLink ACMEBrowserTab="[ACMEBrowserTab]" ColumnNumber="-1" sap:VirtualizedContainerService.HintSize="262.4,52.8" sap2010:WorkflowViewState.IdRef="ClickLink_1" LinkName="[LinkName]" RowNumber="-1">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </a:ClickLink>
                       <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_42">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
@@ -623,7 +635,7 @@
         </Sequence>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Extracts the Work Item Table" Condition="[ProcessStatus=True]" DisplayName="If Work Items Selected, then Read Table" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_28">
+    <If sap2010:Annotation.AnnotationText="Extracts the Work Item Table" Condition="[ProcessStatus=True]" DisplayName="If Work Items Selected, then Read Table" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_28">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -654,20 +666,14 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence sap:VirtualizedContainerService.HintSize="304,246.4" sap2010:WorkflowViewState.IdRef="Sequence_48">
+              <Sequence sap:VirtualizedContainerService.HintSize="324.8,273.6" sap2010:WorkflowViewState.IdRef="Sequence_48">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <a:ReadACMETable ACMEBrowserTab="[ACMEBrowserTab]" ACMETable="[ACMETable]" sap2010:Annotation.AnnotationText="Extract Table" sap:VirtualizedContainerService.HintSize="262.4,53.6" sap2010:WorkflowViewState.IdRef="ReadACMETable_1" TableSelector="&lt;webctrl tag='TABLE' /&gt;">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </a:ReadACMETable>
-                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_48">
+                <a:ReadACMETable ACMEBrowserTab="[ACMEBrowserTab]" ACMETable="[ACMETable]" sap:VirtualizedContainerService.HintSize="283.2,80.8" sap2010:WorkflowViewState.IdRef="ReadACMETable_1" />
+                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="283.2,60" sap2010:WorkflowViewState.IdRef="Assign_48">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
                   </Assign.To>
@@ -697,7 +703,7 @@
         </Sequence>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Process each WIID" Condition="[ProcessStatus=True]" DisplayName="If Table Extracted, then loop through each item" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_29">
+    <If sap2010:Annotation.AnnotationText="Process each WIID" Condition="[ProcessStatus=True]" DisplayName="If Table Extracted, then loop through each item" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_29">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -706,13 +712,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Process each Work Item" sap:VirtualizedContainerService.HintSize="499.2,1600" sap2010:WorkflowViewState.IdRef="Sequence_49">
+        <Sequence DisplayName="Process each Work Item" sap:VirtualizedContainerService.HintSize="304,245.6" sap2010:WorkflowViewState.IdRef="Sequence_49">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="457.6,60" sap2010:WorkflowViewState.IdRef="Assign_49">
+          <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_49">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
             </Assign.To>
@@ -720,22 +726,22 @@
               <InArgument x:TypeArguments="x:Boolean">False</InArgument>
             </Assign.Value>
           </Assign>
-          <TryCatch DisplayName="Loops  through each WIID" sap:VirtualizedContainerService.HintSize="457.6,1407.2" sap2010:WorkflowViewState.IdRef="TryCatch_10">
+          <TryCatch DisplayName="Loops  through each WIID" sap:VirtualizedContainerService.HintSize="262.4,52.8" sap2010:WorkflowViewState.IdRef="TryCatch_10">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Loops  through each WIID" sap:VirtualizedContainerService.HintSize="420.8,1176" sap2010:WorkflowViewState.IdRef="Sequence_50">
+              <Sequence DisplayName="Loops  through each WIID" sap:VirtualizedContainerService.HintSize="304,469.6" sap2010:WorkflowViewState.IdRef="Sequence_50">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Sequence sap2010:Annotation.AnnotationText="Loops  through each WIID" DisplayName="Loop each item" sap:VirtualizedContainerService.HintSize="379.2,883.2" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <Sequence sap2010:Annotation.AnnotationText="Loops  through each WIID" DisplayName="Loop each item" sap:VirtualizedContainerService.HintSize="262.4,176.8" sap2010:WorkflowViewState.IdRef="Sequence_2">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="x:String" Name="urlPage" />
                     <Variable x:TypeArguments="x:String" Name="DatetoCompare" />
@@ -747,7 +753,7 @@
                       <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[ACMETable]" DisplayName="For Each Row in ACME Data Table" sap:VirtualizedContainerService.HintSize="337.6,759.2" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+                  <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[ACMETable]" DisplayName="For Each Row in ACME Data Table" sap:VirtualizedContainerService.HintSize="200,52.8" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
                     <ui:ForEachRow.Body>
                       <ActivityAction x:TypeArguments="sd:DataRow">
                         <ActivityAction.Argument>
@@ -804,7 +810,14 @@
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
                             <TryCatch.Try>
-                              <a:CompareDate BaseDate="2019-01-01" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="CompareDate_1" IsDateExist="[IsDateExist]" RowDate="[DatetoCompare]" />
+                              <a:CompareDate BaseDate="2019-01-01" sap:VirtualizedContainerService.HintSize="200,52.8" sap2010:WorkflowViewState.IdRef="CompareDate_1" IsDateExist="[IsDateExist]" RowDate="[DatetoCompare]">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                              </a:CompareDate>
                             </TryCatch.Try>
                             <TryCatch.Catches>
                               <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_11">
@@ -920,11 +933,11 @@
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
                                   <TryCatch.Try>
-                                    <If sap2010:Annotation.AnnotationText="Checks whether WIID is null" Condition="[String.IsNullOrEmpty(WIID)]" DisplayName="DownloadCheckRequest" sap:VirtualizedContainerService.HintSize="483.2,250.4" sap2010:WorkflowViewState.IdRef="If_6">
+                                    <If sap2010:Annotation.AnnotationText="Checks whether WIID is null" Condition="[String.IsNullOrEmpty(WIID)]" DisplayName="DownloadCheckRequest" sap:VirtualizedContainerService.HintSize="200,84" sap2010:WorkflowViewState.IdRef="If_6">
                                       <sap:WorkflowViewStateService.ViewState>
                                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                                         </scg:Dictionary>
                                       </sap:WorkflowViewStateService.ViewState>
@@ -932,12 +945,12 @@
                                         <Throw Exception="[new BusinessRuleException(&quot;WIID is Null/Empty&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_4" />
                                       </If.Then>
                                       <If.Else>
-                                        <a:DownloadCheckRequest ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" DownloadStatus="[DownloadStatus]" FilePath="[Filepath]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="DownloadCheckRequest_1" IsCheckRequestExist="[IsCheckRequestExist]" WIID="[WIID]" />
+                                        <a:DownloadCheckRequest ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" DownloadStatus="[DownloadStatus]" FilePath="[Filepath]" sap:VirtualizedContainerService.HintSize="283.2,241.6" sap2010:WorkflowViewState.IdRef="DownloadCheckRequest_1" IsCheckRequestExist="[IsCheckRequestExist]" WIID="[WIID]" />
                                       </If.Else>
                                     </If>
                                   </TryCatch.Try>
                                   <TryCatch.Catches>
-                                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="486.4,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_12">
+                                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_12">
                                       <sap:WorkflowViewStateService.ViewState>
                                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -971,17 +984,17 @@
                                         </scg:Dictionary>
                                       </sap:WorkflowViewStateService.ViewState>
                                       <If.Then>
-                                        <Sequence DisplayName="Extract Client ID" sap:VirtualizedContainerService.HintSize="241.6,332.8" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                        <Sequence DisplayName="Extract Client ID" sap:VirtualizedContainerService.HintSize="324.8,391.2" sap2010:WorkflowViewState.IdRef="Sequence_13">
                                           <sap:WorkflowViewStateService.ViewState>
                                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                                             </scg:Dictionary>
                                           </sap:WorkflowViewStateService.ViewState>
-                                          <ui:GoBack Browser="[ACMEBrowserTab]" DisplayName="Go Back" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="GoBack_4" />
-                                          <Delay Duration="00:00:10" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Delay_1" />
-                                          <a:PDFExtraction ClientID="[ClientID]" FilePath="[Filepath]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="PDFExtraction_1" />
-                                          <If Condition="[String.IsNullOrEmpty(ClientID)]" DisplayName="Check if Client ID is null" sap:VirtualizedContainerService.HintSize="200,52.8" sap2010:WorkflowViewState.IdRef="If_9">
+                                          <ui:GoBack Browser="[ACMEBrowserTab]" DisplayName="Go Back" sap:VirtualizedContainerService.HintSize="283.2,22.4" sap2010:WorkflowViewState.IdRef="GoBack_4" />
+                                          <Delay Duration="00:00:10" sap:VirtualizedContainerService.HintSize="283.2,22.4" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                                          <a:PDFExtraction ClientID="[ClientID]" FilePath="[Filepath]" sap:VirtualizedContainerService.HintSize="283.2,80.8" sap2010:WorkflowViewState.IdRef="PDFExtraction_1" />
+                                          <If Condition="[String.IsNullOrEmpty(ClientID)]" DisplayName="Check if Client ID is null" sap:VirtualizedContainerService.HintSize="283.2,52.8" sap2010:WorkflowViewState.IdRef="If_9">
                                             <sap:WorkflowViewStateService.ViewState>
                                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -1480,13 +1493,13 @@
                     </ui:ForEachRow.Body>
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                         <x:Boolean x:Key="IsPinned">False</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </ui:ForEachRow>
                 </Sequence>
-                <Assign DisplayName="Assign WIIDs Processed Status" sap:VirtualizedContainerService.HintSize="379.2,60" sap2010:WorkflowViewState.IdRef="Assign_67">
+                <Assign DisplayName="Assign WIIDs Processed Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_67">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[WIIDProcessedStatus]</OutArgument>
                   </Assign.To>
@@ -1494,7 +1507,7 @@
                     <InArgument x:TypeArguments="x:Boolean">True</InArgument>
                   </Assign.Value>
                 </Assign>
-                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="379.2,60" sap2010:WorkflowViewState.IdRef="Assign_50">
+                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_50">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
                   </Assign.To>
@@ -1524,7 +1537,7 @@
         </Sequence>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Logout" Condition="[ProcessStatus=True]" DisplayName="If all WIIDs are processed, then logout" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_40">
+    <If sap2010:Annotation.AnnotationText="Logout" Condition="[ProcessStatus=True]" DisplayName="If all WIIDs are processed, then logout" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_40">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -1533,10 +1546,10 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Logout" sap:VirtualizedContainerService.HintSize="304,245.6" sap2010:WorkflowViewState.IdRef="Sequence_66">
+        <Sequence DisplayName="Logout for Exception case" sap:VirtualizedContainerService.HintSize="200,68.8" sap2010:WorkflowViewState.IdRef="Sequence_66">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
@@ -1610,20 +1623,20 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <TryCatch.Try>
-            <Sequence DisplayName="Logout" sap:VirtualizedContainerService.HintSize="304,246.4" sap2010:WorkflowViewState.IdRef="Sequence_68">
+            <Sequence DisplayName="Logout" sap:VirtualizedContainerService.HintSize="324.8,358.4" sap2010:WorkflowViewState.IdRef="Sequence_68">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <a:Logout ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" sap2010:Annotation.AnnotationText="Logout from website" sap:VirtualizedContainerService.HintSize="262.4,53.6" sap2010:WorkflowViewState.IdRef="Logout_2">
+              <a:Logout ACMEBrowserTab="[ACMEBrowserTab]" ACMEDelay="[Delay]" sap2010:Annotation.AnnotationText="Logout from website" sap:VirtualizedContainerService.HintSize="283.2,165.6" sap2010:WorkflowViewState.IdRef="Logout_2">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </a:Logout>
-              <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_68">
+              <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="283.2,60" sap2010:WorkflowViewState.IdRef="Assign_68">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
                 </Assign.To>
@@ -1662,7 +1675,7 @@
         </TryCatch>
       </If.Else>
     </If>
-    <If sap2010:Annotation.AnnotationText="Zip all downloaded files" Condition="[ProcessStatus=True And WIIDProcessedStatus=True]" DisplayName="If all WIIDs are processed and logout successfull, then zip all files" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_41">
+    <If sap2010:Annotation.AnnotationText="Zip all downloaded files" Condition="[ProcessStatus=True And WIIDProcessedStatus=True]" DisplayName="If all WIIDs are processed and logout successfull, then zip all files" sap:VirtualizedContainerService.HintSize="483.2,84" sap2010:WorkflowViewState.IdRef="If_41">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -1783,10 +1796,10 @@
         </Sequence>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Send Mail" Condition="[ProcessStatus=True]" DisplayName="If files are zipped, then Send Mail" sap:VirtualizedContainerService.HintSize="333.6,84" sap2010:WorkflowViewState.IdRef="If_42">
+    <If sap2010:Annotation.AnnotationText="Send Mail" Condition="[ProcessStatus=True]" DisplayName="If files are zipped, then Send Mail" sap:VirtualizedContainerService.HintSize="483.2,456" sap2010:WorkflowViewState.IdRef="If_42">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
@@ -1815,32 +1828,33 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Send Final Report" sap:VirtualizedContainerService.HintSize="527.2,542.4" sap2010:WorkflowViewState.IdRef="Sequence_73">
+              <Sequence DisplayName="Send Final Report" sap:VirtualizedContainerService.HintSize="304,289.6" sap2010:WorkflowViewState.IdRef="Sequence_73">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If sap2010:Annotation.AnnotationText="Checks whether the datatable is empty" Condition="[Report.Rows.Count&gt;0]" DisplayName="Send Final Report" sap:VirtualizedContainerService.HintSize="485.6,349.6" sap2010:WorkflowViewState.IdRef="If_21">
+                <If sap2010:Annotation.AnnotationText="Checks whether the datatable is empty" Condition="[Report.Rows.Count&gt;0]" DisplayName="Send Final Report" sap:VirtualizedContainerService.HintSize="262.4,96.8" sap2010:WorkflowViewState.IdRef="If_21">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <If.Then>
-                    <Sequence DisplayName="Send Final Report as mail" sap:VirtualizedContainerService.HintSize="241.6,159.2" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                    <Sequence DisplayName="Send Final Report as mail" sap:VirtualizedContainerService.HintSize="241.6,145.6" sap2010:WorkflowViewState.IdRef="Sequence_24">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <a:SendMail sap2010:Annotation.AnnotationText="Sends mail with Table and Attachments" Bot_MailID="[BOT_MailID]" Filepath="[MailFilePath]" sap:VirtualizedContainerService.HintSize="200,66.4" sap2010:WorkflowViewState.IdRef="SendMail_1" MailSubject="ACME" ReportTable="[Report]" To_MailID="[To_MailID]">
+                      <a:SendMail BotMailID="[BOTMailID]" Filepath="[Filepath]" sap:VirtualizedContainerService.HintSize="200,52.8" sap2010:WorkflowViewState.IdRef="SendMail_1" MailSubject="ACME" ReportTable="[Report]" ToMailID="[ToMailID]">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
                       </a:SendMail>
@@ -1850,7 +1864,7 @@
                     <Throw Exception="[New BusinessRuleException(&quot;Output Datatable is empty&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_15" />
                   </If.Else>
                 </If>
-                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="485.6,60" sap2010:WorkflowViewState.IdRef="Assign_73">
+                <Assign DisplayName="Assign Process Status" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_73">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Boolean">[ProcessStatus]</OutArgument>
                   </Assign.To>
@@ -1861,7 +1875,7 @@
               </Sequence>
             </TryCatch.Try>
             <TryCatch.Catches>
-              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="530.4,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_22">
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_22">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -1880,6 +1894,6 @@
         </Sequence>
       </If.Then>
     </If>
-    <ui:LogMessage DisplayName="End Log" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;ACME Process Run Completed&quot;]" />
+    <ui:LogMessage DisplayName="End Log" sap:VirtualizedContainerService.HintSize="483.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;ACME Process Run Completed&quot;]" />
   </Sequence>
 </Activity>

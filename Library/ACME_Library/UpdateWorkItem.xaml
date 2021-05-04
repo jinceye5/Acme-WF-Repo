@@ -1,12 +1,20 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property sap2010:Annotation.AnnotationText="Browser used for process run" Name="ACMEBrowserTab" Type="InArgument(ui:Browser)" />
-    <x:Property sap2010:Annotation.AnnotationText="Boolean to check whether the Check Request option is available" Name="IsCheckRequestExist" Type="InArgument(x:Boolean)" />
+    <x:Property sap2010:Annotation.AnnotationText="Browser used for process run" Name="ACMEBrowserTab" Type="InArgument(ui:Browser)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property sap2010:Annotation.AnnotationText="Boolean to check whether the Check Request option is available" Name="IsCheckRequestExist" Type="InArgument(x:Boolean)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1398.4,1918.4</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>979.2,1595.2</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="52">
@@ -70,14 +78,15 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="1408.8,1853.6" sap2010:WorkflowViewState.IdRef="Sequence_2">
+  <Sequence sap2010:Annotation.AnnotationText="Selects the Update Work Item Option" DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="989.6,1530.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1367.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Update Work Item has started&quot;]" />
-    <TryCatch DisplayName="Try Catch-UpdateWorkItem" sap:VirtualizedContainerService.HintSize="1367.2,1495.2" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="948,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Update Work Item has started&quot;]" />
+    <TryCatch DisplayName="Try Catch-UpdateWorkItem" sap:VirtualizedContainerService.HintSize="948,1140.8" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -85,13 +94,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" sap2010:Annotation.AnnotationText="Attach the Browser Tab." Browser="[ACMEBrowserTab]" BrowserType="Chrome" DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="1330.4,1264" sap2010:WorkflowViewState.IdRef="BrowserScope_1" InformativeScreenshot="dce2293e35a628e471007ab4fd0ba4c1">
+        <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" sap2010:Annotation.AnnotationText="Attach the Browser Tab." Browser="[ACMEBrowserTab]" BrowserType="Chrome" DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="911.2,909.6" sap2010:WorkflowViewState.IdRef="BrowserScope_1" InformativeScreenshot="dce2293e35a628e471007ab4fd0ba4c1">
           <ui:BrowserScope.Body>
             <ActivityAction x:TypeArguments="x:Object">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
               </ActivityAction.Argument>
-              <Sequence DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="1296.8,1085.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
+              <Sequence DisplayName="UpdateWorkItem" sap:VirtualizedContainerService.HintSize="877.6,731.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="x:Boolean" Name="IsButtonExists" />
                 </Sequence.Variables>
@@ -100,7 +109,7 @@
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If sap2010:Annotation.AnnotationText="Checking whether the provided arguments having value or it's empty" Condition="[IsCheckRequestExist]" DisplayName="Checking for Check Request Exists or not" sap:VirtualizedContainerService.HintSize="1255.2,992.8" sap2010:WorkflowViewState.IdRef="If_1">
+                <If sap2010:Annotation.AnnotationText="Checking whether the provided arguments having value or it's empty" Condition="[IsCheckRequestExist]" DisplayName="Checking for Check Request Exists or not" sap:VirtualizedContainerService.HintSize="836,638.4" sap2010:WorkflowViewState.IdRef="If_1">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -109,13 +118,13 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <If.Then>
-                    <Sequence sap:VirtualizedContainerService.HintSize="836,802.4" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <Sequence DisplayName="Select the Primary Update Work Item button" sap:VirtualizedContainerService.HintSize="416.8,448" sap2010:WorkflowViewState.IdRef="Sequence_7">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Sequence sap2010:Annotation.AnnotationText="Pre Check condition for the action" DisplayName="Pre Check" sap:VirtualizedContainerService.HintSize="794.4,709.6" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                      <Sequence sap2010:Annotation.AnnotationText="Pre Check condition for the action" DisplayName="Pre Check" sap:VirtualizedContainerService.HintSize="375.2,355.2" sap2010:WorkflowViewState.IdRef="Sequence_3">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -123,9 +132,9 @@
                             <x:Boolean x:Key="IsPinned">False</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <ui:UiElementExists sap2010:Annotation.AnnotationText="Checking for the Update Work Item Button" DisplayName="Button Exists" Exists="[IsButtonExists]" sap:VirtualizedContainerService.HintSize="752.8,138.4" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+                        <ui:UiElementExists sap2010:Annotation.AnnotationText="Checking for the Update Work Item Button" DisplayName="Button Exists" Exists="[IsButtonExists]" sap:VirtualizedContainerService.HintSize="333.6,138.4" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
                           <ui:UiElementExists.Target>
-                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="c9b9d87b-d99a-43a2-b04b-2d11362e43fd" InformativeScreenshot="bfbf8931af2f30d92adfa75091d0aba7" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;&lt;webctrl aaname=' Update Work Item' tag='BUTTON' /&gt;">
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="c9b9d87b-d99a-43a2-b04b-2d11362e43fd" InformativeScreenshot="bfbf8931af2f30d92adfa75091d0aba7" Selector="&lt;webctrl aaname=' Update Work Item' tag='BUTTON' /&gt;">
                               <ui:Target.TimeoutMS>
                                 <InArgument x:TypeArguments="x:Int32" />
                               </ui:Target.TimeoutMS>
@@ -142,15 +151,15 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </ui:UiElementExists>
-                        <If Condition="[IsButtonExists]" DisplayName="Check for Button exists" sap:VirtualizedContainerService.HintSize="752.8,407.2" sap2010:WorkflowViewState.IdRef="If_2">
+                        <If Condition="[IsButtonExists]" DisplayName="Check for Button exists" sap:VirtualizedContainerService.HintSize="333.6,52.8" sap2010:WorkflowViewState.IdRef="If_2">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                           <If.Then>
-                            <ui:Click AlterIfDisabled="{x:Null}" CursorMotionType="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" sap2010:Annotation.AnnotationText="Clicking the Update Work Item Button" ClickType="CLICK_SINGLE" DisplayName="Update Button Click" sap:VirtualizedContainerService.HintSize="333.6,100" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="False">
+                            <ui:Click AlterIfDisabled="{x:Null}" CursorMotionType="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" sap2010:Annotation.AnnotationText="Clicking the Update Work Item Button" ClickType="CLICK_SINGLE" DisplayName="Update Button Click" sap:VirtualizedContainerService.HintSize="333.6,100" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
                               <ui:Click.CursorPosition>
                                 <ui:CursorPosition Position="Center">
                                   <ui:CursorPosition.OffsetX>
@@ -162,7 +171,7 @@
                                 </ui:CursorPosition>
                               </ui:Click.CursorPosition>
                               <ui:Click.Target>
-                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="cb10e9ba-d496-4fd8-878f-1e217e36f714" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;&lt;webctrl aaname=' Update Work Item' tag='BUTTON' /&gt;">
+                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="cb10e9ba-d496-4fd8-878f-1e217e36f714" Selector="&lt;webctrl aaname=' Update Work Item' tag='BUTTON' /&gt;">
                                   <ui:Target.TimeoutMS>
                                     <InArgument x:TypeArguments="x:Int32" />
                                   </ui:Target.TimeoutMS>
@@ -204,10 +213,11 @@
                     </Sequence>
                   </If.Then>
                   <If.Else>
-                    <Sequence sap:VirtualizedContainerService.HintSize="375.2,332.8" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                    <Sequence DisplayName="Selects the Confirmation Update Work Item button" sap:VirtualizedContainerService.HintSize="375.2,332.8" sap2010:WorkflowViewState.IdRef="Sequence_10">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                       <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;No Check request found&quot;]">
@@ -218,33 +228,17 @@
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
                       </ui:LogMessage>
-                      <ui:Click AlterIfDisabled="{x:Null}" CursorMotionType="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Update" sap:VirtualizedContainerService.HintSize="333.6,107.2" sap2010:WorkflowViewState.IdRef="Click_2" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="False">
+                      <ui:Click AlterIfDisabled="{x:Null}" CursorMotionType="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click Update" sap:VirtualizedContainerService.HintSize="333.6,107.2" sap2010:WorkflowViewState.IdRef="Click_3" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
                         <ui:Click.CursorPosition>
-                          <ui:CursorPosition Position="Center">
-                            <ui:CursorPosition.OffsetX>
-                              <InArgument x:TypeArguments="x:Int32" />
-                            </ui:CursorPosition.OffsetX>
-                            <ui:CursorPosition.OffsetY>
-                              <InArgument x:TypeArguments="x:Int32" />
-                            </ui:CursorPosition.OffsetY>
-                          </ui:CursorPosition>
+                          <ui:CursorPosition OffsetX="77" OffsetY="18" Position="TopLeft" />
                         </ui:Click.CursorPosition>
                         <ui:Click.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="c0103821-2f7c-4fbe-82d0-e475caad0d43" InformativeScreenshot="0cce1de3638a99233bf1ae157b733f85" Selector="&lt;html app='chrome.exe' htmlwindowname='WI-Update' omit:title='ACME System 1' /&gt;&lt;webctrl id='buttonUpdate' tag='BUTTON' /&gt;">
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="c430ab53-f48c-415f-a7e7-911ea538b826" InformativeScreenshot="cc536902032f85ad02abd1d333a34c0d" Selector="&lt;webctrl id='buttonUpdate' tag='BUTTON' /&gt;" WaitForReady="COMPLETE">
                             <ui:Target.TimeoutMS>
                               <InArgument x:TypeArguments="x:Int32" />
                             </ui:Target.TimeoutMS>
-                            <ui:Target.WaitForReady>
-                              <InArgument x:TypeArguments="ui:WaitForReady" />
-                            </ui:Target.WaitForReady>
                           </ui:Target>
                         </ui:Click.Target>
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
                       </ui:Click>
                     </Sequence>
                   </If.Else>
@@ -262,7 +256,7 @@
         </ui:BrowserScope>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="1333.6,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="914.4,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -278,6 +272,6 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1367.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Update Work Item completed&quot;]" />
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="948,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Update Work Item completed&quot;]" />
   </Sequence>
 </Activity>
